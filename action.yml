@@ -1,9 +1,8 @@
 name: 'Elm Lint'
 description: 'Lints the Elm code using elm-review and elm-format'
-path:
-    description: 'Path or paths to be linted'
+extra-path:
+    description: 'Extra paths to be linted'
     required: false
-    default: 'src'
 runs:
   using: "composite"
   steps:
@@ -12,9 +11,9 @@ runs:
        shell: bash
 
      - name: Run linter
-       run: npx elm-format --validate ${{ inputs.path }}
+       run: npx elm-format --validate src ${{ inputs.extra-path }}
        shell: bash
 
      - name: Run elm-review
-       run: npx elm-review ${{ inputs.path }}
+       run: npx elm-review --template PaackEng/elm-review-config src ${{ inputs.extra-path }}
        shell: bash
