@@ -1,7 +1,7 @@
-name: 'Elm Lint'
-description: 'Lints the Elm code using elm-review and elm-format'
+name: 'Elm Validate'
+description: 'Runs Elm through elm-format and elm-review then compiles it'
 extra-path:
-    description: 'Extra paths to be linted'
+    description: 'Extra paths to be validated'
     required: false
 runs:
   using: "composite"
@@ -16,4 +16,8 @@ runs:
 
      - name: Run elm-review
        run: npx elm-review --template PaackEng/elm-review-config src ${{ inputs.extra-path }}
+       shell: bash
+
+     - name: Validate code
+       run: npx elm make src/Main.elm --output /dev/null
        shell: bash
