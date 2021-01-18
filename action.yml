@@ -1,7 +1,10 @@
 name: 'Elm Validate'
 description: 'Runs Elm through elm-format and elm-review then compiles it'
+compile-working-directory:
+    description: 'Working directory of the compile step'
+    required: false
 extra-path:
-    description: 'Extra paths to be validated'
+    description: 'Extra paths to be linted'
     required: false
 runs:
   using: "composite"
@@ -19,5 +22,6 @@ runs:
        shell: bash
 
      - name: Validate code
+       working-directory: ${{ inputs.compile-working-directory }}
        run: npx elm make src/Main.elm --output /dev/null
        shell: bash
