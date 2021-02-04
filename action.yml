@@ -1,7 +1,7 @@
 name: 'Elm Validate'
 description: 'Runs Elm through elm-format and elm-review then compiles it'
-compile-working-directory:
-    description: 'Working directory of linter/review/compile step'
+elm-working-directory:
+    description: 'Working directory of lint, review and compile steps'
     required: false
     default: '.'
 extra-path:
@@ -15,16 +15,16 @@ runs:
        shell: bash
 
      - name: Run linter
-       working-directory: ${{ inputs.compile-working-directory }}
+       working-directory: ${{ inputs.elm-working-directory }}
        run: npx elm-format --validate src ${{ inputs.extra-path }}
        shell: bash
 
      - name: Run elm-review
-       working-directory: ${{ inputs.compile-working-directory }}
+       working-directory: ${{ inputs.elm-working-directory }}
        run: npx elm-review --template PaackEng/elm-review-config src ${{ inputs.extra-path }}
        shell: bash
 
      - name: Validate code
-       working-directory: ${{ inputs.compile-working-directory }}
+       working-directory: ${{ inputs.elm-working-directory }}
        run: npx elm make src/Main.elm --output /dev/null
        shell: bash
