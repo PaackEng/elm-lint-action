@@ -18,21 +18,26 @@ runs:
   steps:
     - name: Install dependencies
       run: yarn install
+      shell: bash
 
     - name: Run linter
       working-directory: ${{ inputs.elm-working-directory }}
       run: npx elm-format --validate src ${{ inputs.extra-path }}
+      shell: bash
 
     - name: Run elm-review
       working-directory: ${{ inputs.elm-working-directory }}
       run: npx elm-review --template PaackEng/elm-review-config src ${{ inputs.extra-path }}
+      shell: bash
 
     - name: Validate code (app)
       working-directory: ${{ inputs.elm-working-directory }}
       run: npx elm make src/Main.elm --output /dev/null
+      shell: bash
       if: inputs.elm-package == false
 
     - name: Validate code (package)
       working-directory: ${{ inputs.elm-working-directory }}
       run: npx elm make
+      shell: bash
       if: inputs.elm-package == true
