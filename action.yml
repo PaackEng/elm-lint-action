@@ -30,14 +30,7 @@ runs:
       run: npx elm-review --template PaackEng/elm-review-config src ${{ inputs.extra-path }}
       shell: bash
 
-    - if: inputs.elm-package == false
-      name: Validate code (app)
+    - name: Validate code
       working-directory: ${{ inputs.elm-working-directory }}
-      run: npx elm make src/Main.elm --output /dev/null
-      shell: bash
-
-    - if: inputs.elm-package == true
-      name: Validate code (package)
-      working-directory: ${{ inputs.elm-working-directory }}
-      run: npx elm make
+      run: npx elm make ${{ inputs.elm-package && 'src/Main.elm --output /dev/null' }}
       shell: bash
