@@ -1,5 +1,9 @@
 name: 'Elm Validate'
 description: 'Runs Elm through elm-format and elm-review then compiles it'
+elm-package:
+    description: 'Is this a package instead of an app?'
+    required: false
+    default: false
 elm-working-directory:
     description: 'Working directory of lint, review and compile steps'
     required: false
@@ -24,7 +28,14 @@ runs:
        run: npx elm-review --template PaackEng/elm-review-config src ${{ inputs.extra-path }}
        shell: bash
 
-     - name: Validate code
+     - name: Validate code (app)
+       if: inputs.elm-package == false
        working-directory: ${{ inputs.elm-working-directory }}
        run: npx elm make src/Main.elm --output /dev/null
+       shell: bash
+
+     - name: Validate code (package)
+       if: inputs.elm-package == true
+       working-directory: ${{ inputs.elm-working-directory }}
+       run: npx elm make
        shell: bash
