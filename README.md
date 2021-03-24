@@ -7,7 +7,9 @@ A composite action that validates elm code by
 3. then finally it compiles the code
 
 ## Usage
+
 In order to use this action all you have to do is add this to your target job:
+
 ```yml
 - uses: PaackEng/elm-validate-action@main
 ```
