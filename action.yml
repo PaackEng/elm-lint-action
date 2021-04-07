@@ -1,30 +1,39 @@
-name: 'Elm Validate'
-description: 'Runs Elm through elm-format and elm-review then compiles it'
-elm-working-directory:
-    description: 'Working directory of lint, review and compile steps'
+name: "Elm Validate"
+description: "Runs Elm through elm-format and elm-review then compiles it"
+inputs:
+  elm-working-directory:
+    description: "Working directory of lint, review and compile steps"
     required: false
-    default: '.'
-extra-path:
-    description: 'Extra paths to be linted'
+    default: "."
+  elm-format-extra-path:
+    description: "Extra paths to be linted"
     required: false
+  elm-review-extra-options:
+    description: "Extra options to elm-review"
+    required: false
+  elm-make-options:
+    description: "Options passed to elm-make"
+    required: false
+    default: "src/Main.elm --output /dev/null"
+
 runs:
   using: "composite"
   steps:
-     - name: Install dependencies
-       run: yarn install
-       shell: bash
+    - name: Install dependencies
+      run: yarn install
+      shell: bash
 
-     - name: Run linter
-       working-directory: ${{ inputs.elm-working-directory }}
-       run: npx elm-format --validate src ${{ inputs.extra-path }}
-       shell: bash
+    - name: Run linter
+      working-directory: ${{ inputs.elm-working-directory }}
+      run: yarn exec --prefer-offline -- elm-format --validate src ${{ inputs.elm-format-extra-path }}
+      shell: bash
 
-     - name: Run elm-review
-       working-directory: ${{ inputs.elm-working-directory }}
-       run: npx elm-review --template PaackEng/elm-review-config src ${{ inputs.extra-path }}
-       shell: bash
+    - name: Run elm-review
+      working-directory: ${{ inputs.elm-working-directory }}
+      run: yarn exec --prefer-offline -- elm-review --template PaackEng/elm-review-config#1.1.0 ${{ inputs.elm-review-extra-options }}
+      shell: bash
 
-     - name: Validate code
-       working-directory: ${{ inputs.elm-working-directory }}
-       run: npx elm make src/Main.elm --output /dev/null
-       shell: bash
+    - name: Validate code
+      working-directory: ${{ inputs.elm-working-directory }}
+      run: yarn exec --prefer-offline -- elm make ${{ inputs.elm-make-options }}
+      shell: bash
