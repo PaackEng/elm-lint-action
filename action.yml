@@ -30,7 +30,7 @@ runs:
 
     - name: Run elm-review
       working-directory: ${{ inputs.elm-working-directory }}
-      run: yarn exec --prefer-offline -- elm-review --template PaackEng/elm-review-config#1.1.0 ${{ inputs.elm-review-extra-options }}
+      run: yarn exec --prefer-offline -- elm-review --template PaackEng/elm-review-config#1.1.1 ${{ inputs.elm-review-extra-options }}
       shell: bash
 
     - name: Validate code
